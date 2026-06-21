@@ -30,6 +30,7 @@ const initialState: TransportState = {
   lastReportTime: Date.now(),
   tempRecords: [],
   abnormalSegments: [],
+  activeAbnormal: null,
   driverRemark: ''
 }
 
@@ -48,7 +49,6 @@ interface TransportStore extends TransportState {
 }
 
 let mockInterval: ReturnType<typeof setInterval> | null = null
-let currentAbnormal: AbnormalSegment | null = null
 
 function generateMockTemp(min: number, max: number, current: number): number {
   const mid = (min + max) / 2
@@ -87,7 +87,6 @@ export const useTransportStore = create<TransportStore>((set, get) => ({
     const initTemp = (state.info.tempMin + state.info.tempMax) / 2
 
     if (mockInterval) clearInterval(mockInterval)
-    currentAbnormal = null
 
     set({
       status: 'running',
@@ -101,7 +100,8 @@ export const useTransportStore = create<TransportStore>((set, get) => ({
         temperature: initTemp,
         status: 'normal'
       }],
-      abnormalSegments: []
+      abnormalSegments: [],
+      activeAbnormal: null
     })
 
     mockInterval = setInterval(() => {
@@ -118,21 +118,22 @@ export const useTransportStore = create<TransportStore>((set, get) => ({
       mockInterval = null
     }
     const state = get()
-    if (currentAbnormal) {
-      const updated: AbnormalSegment = {
-        ...currentAbnormal,
-        endTime: Date.now(),
+    const endTime = Date.now()
+    let finalAbnormalSegments = state.abnormalSegments
+    if (state.activeAbnormal) {
+      const endedAbnormal: AbnormalSegment = {
+        ...state.activeAbnormal,
+        endTime,
         endTemp: state.currentTemp
       }
-      set({
-        abnormalSegments: [...state.abnormalSegments, updated]
-      })
-      currentAbnormal = null
+      finalAbnormalSegments = [...finalAbnormalSegments, endedAbnormal]
     }
     set({
       status: 'finished',
-      info: { ...state.info, endTime: Date.now() },
-      coolerStatus: 'idle'
+      info: { ...state.info, endTime },
+      coolerStatus: 'idle',
+      activeAbnormal: null,
+      abnormalSegments: finalAbnormalSegments
     })
   },
 
@@ -141,7 +142,6 @@ export const useTransportStore = create<TransportStore>((set, get) => ({
       clearInterval(mockInterval)
       mockInterval = null
     }
-    currentAbnormal = null
     set({
       ...initialState,
       info: { ...initialInfo }
@@ -160,31 +160,47 @@ export const useTransportStore = create<TransportStore>((set, get) => ({
     const records = [...state.tempRecords, record].slice(-200)
 
     let newAbnormalSegments = state.abnormalSegments
+    let newActiveAbnormal: AbnormalSegment | null = state.activeAbnormal
+
     if (isAbnormal(newStatus)) {
-      if (!currentAbnormal) {
-        currentAbnormal = {
+      const abnormalType = newStatus.includes('high') ? 'high' : 'low'
+      if (!newActiveAbnormal) {
+        newActiveAbnormal = {
           startTime: now,
           endTime: now,
           startTemp: temp,
           endTemp: temp,
           maxTemp: temp,
           minTemp: temp,
-          type: newStatus.includes('high') ? 'high' : 'low',
+          type: abnormalType,
           handled: false,
           remark: ''
         }
-      } else {
-        currentAbnormal = {
-          ...currentAbnormal,
+      } else if (newActiveAbnormal.type === abnormalType) {
+        newActiveAbnormal = {
+          ...newActiveAbnormal,
           endTime: now,
           endTemp: temp,
-          maxTemp: Math.max(currentAbnormal.maxTemp, temp),
-          minTemp: Math.min(currentAbnormal.minTemp, temp)
+          maxTemp: Math.max(newActiveAbnormal.maxTemp, temp),
+          minTemp: Math.min(newActiveAbnormal.minTemp, temp)
+        }
+      } else {
+        newAbnormalSegments = [...newAbnormalSegments, newActiveAbnormal]
+        newActiveAbnormal = {
+          startTime: now,
+          endTime: now,
+          startTemp: temp,
+          endTemp: temp,
+          maxTemp: temp,
+          minTemp: temp,
+          type: abnormalType,
+          handled: false,
+          remark: ''
         }
       }
-    } else if (currentAbnormal) {
-      newAbnormalSegments = [...newAbnormalSegments, currentAbnormal]
-      currentAbnormal = null
+    } else if (newActiveAbnormal) {
+      newAbnormalSegments = [...newAbnormalSegments, newActiveAbnormal]
+      newActiveAbnormal = null
     }
 
     set({
@@ -192,7 +208,8 @@ export const useTransportStore = create<TransportStore>((set, get) => ({
       tempStatus: newStatus,
       lastReportTime: now,
       tempRecords: records,
-      abnormalSegments: newAbnormalSegments
+      abnormalSegments: newAbnormalSegments,
+      activeAbnormal: newActiveAbnormal
     })
   },
 
@@ -200,6 +217,16 @@ export const useTransportStore = create<TransportStore>((set, get) => ({
 
   addAbnormalRemark: (remark) => {
     const state = get()
+    if (state.activeAbnormal) {
+      set({
+        activeAbnormal: {
+          ...state.activeAbnormal,
+          handled: true,
+          remark
+        }
+      })
+      return
+    }
     const last = state.abnormalSegments[state.abnormalSegments.length - 1]
     if (last) {
       const updated = [...state.abnormalSegments]

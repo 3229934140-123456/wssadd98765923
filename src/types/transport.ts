@@ -49,5 +49,6 @@ export interface TransportState {
   lastReportTime: number
   tempRecords: TempRecord[]
   abnormalSegments: AbnormalSegment[]
+  activeAbnormal: AbnormalSegment | null
   driverRemark: string
 }

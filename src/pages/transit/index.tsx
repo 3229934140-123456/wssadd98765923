@@ -10,6 +10,7 @@ import AlertModal from '@/components/AlertModal'
 import TempChart from '@/components/TempChart'
 import { useTransportStore } from '@/store/useTransportStore'
 import { formatTemp, isWarning, isDanger } from '@/utils/temperature'
+import { speakWarning, stopSpeaking } from '@/utils/speech'
 
 function TransitPage() {
   const {
@@ -21,6 +22,7 @@ function TransitPage() {
     lastReportTime,
     tempRecords,
     abnormalSegments,
+    activeAbnormal,
     endTransport,
     addAbnormalRemark
   } = useTransportStore()
@@ -41,8 +43,12 @@ function TransitPage() {
       if (alertedStatusRef.current !== key) {
         alertedStatusRef.current = key
         setShowAlert(true)
+        speakWarning(tempStatus)
         console.log('[Transit] alert triggered', tempStatus, currentTemp)
       }
+    }
+    return () => {
+      stopSpeaking()
     }
   }, [tempStatus, status, currentTemp])
 
@@ -74,6 +80,14 @@ function TransitPage() {
     const m = Math.floor((diff % 3600000) / 60000)
     return `${h}小时${m}分`
   }, [info.estimatedArrival, isRunning])
+
+  const allAbnormals = useMemo(() => {
+    const result = [...abnormalSegments]
+    if (activeAbnormal) {
+      result.push({ ...activeAbnormal, _active: true } as any)
+    }
+    return result
+  }, [abnormalSegments, activeAbnormal])
 
   const handleEndTransport = () => {
     Taro.showModal({
@@ -185,24 +199,30 @@ function TransitPage() {
         tempMax={info.tempMax}
       />
 
-      {abnormalSegments.length > 0 && (
+      {allAbnormals.length > 0 && (
         <View className={styles.infoCard} style={{ marginTop: 24 }}>
-          <Text className={styles.infoCardTitle}>异常记录（{abnormalSegments.length}次）</Text>
+          <Text className={styles.infoCardTitle}>异常记录（{allAbnormals.length}次）</Text>
           <View className={styles.abnormalList}>
-            {abnormalSegments.slice().reverse().map((seg, i) => (
+            {allAbnormals.slice().reverse().map((seg: any, i) => (
               <View
                 key={i}
-                className={classnames(styles.abnormalItem, seg.type === 'high' && styles.abnormalItemHigh)}
+                className={classnames(styles.abnormalItem, seg.type === 'high' && styles.abnormalItemHigh, seg._active && styles.abnormalItemActive)}
               >
                 <View className={styles.abnormalHeader}>
                   <View className={styles.abnormalType}>
                     {seg.type === 'high' ? '温度偏高' : '温度偏低'}
                   </View>
-                  {seg.handled && <Text className={styles.abnormalHandled}>已处理</Text>}
+                  {seg._active ? (
+                    <Text className={styles.abnormalActive}>进行中</Text>
+                  ) : seg.handled ? (
+                    <Text className={styles.abnormalHandled}>已处理</Text>
+                  ) : null}
                 </View>
                 <Text className={styles.abnormalTime}>
-                  {dayjs(seg.startTime).format('HH:mm')} - {dayjs(seg.endTime).format('HH:mm')}
-                  （{Math.ceil((seg.endTime - seg.startTime) / 60000)}分钟）
+                  {dayjs(seg.startTime).format('HH:mm')} - {seg._active ? '至今' : dayjs(seg.endTime).format('HH:mm')}
+                  （{seg._active
+                    ? Math.ceil((Date.now() - seg.startTime) / 60000)
+                    : Math.ceil((seg.endTime - seg.startTime) / 60000)}分钟）
                 </Text>
                 <Text className={styles.abnormalTemp}>
                   {formatTemp(seg.minTemp)} ~ {formatTemp(seg.maxTemp)} ℃
@@ -216,7 +236,7 @@ function TransitPage() {
         </View>
       )}
 
-      {abnormalSegments.length === 0 && (
+      {allAbnormals.length === 0 && (
         <View className={styles.infoCard} style={{ marginTop: 24 }}>
           <Text className={styles.infoCardTitle}>异常记录</Text>
           <View className={styles.emptyAbnormal}>

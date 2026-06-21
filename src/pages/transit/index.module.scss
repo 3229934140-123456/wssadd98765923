@@ -216,6 +216,28 @@
   font-weight: $font-weight-medium;
 }
 
+.abnormalActive {
+  font-size: $font-size-xs;
+  color: $color-error;
+  font-weight: $font-weight-semibold;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.abnormalItemActive {
+  border-style: dashed;
+  animation: pulse-border 1.5s infinite;
+}
+
+@keyframes pulse-border {
+  0%, 100% { border-color: rgba($color-warning, 0.3); }
+  50% { border-color: rgba($color-warning, 0.6); }
+}
+
 .abnormalTime {
   display: block;
   font-size: $font-size-sm;

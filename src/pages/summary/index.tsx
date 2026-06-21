@@ -14,12 +14,29 @@ function SummaryPage() {
     info,
     tempRecords,
     abnormalSegments,
+    activeAbnormal,
     driverRemark,
     setDriverRemark,
-    resetTransport
+    resetTransport,
+    endTransport
   } = useTransportStore()
 
   const [generated, setGenerated] = useState(false)
+
+  const isFinished = status === 'finished'
+  const isRunning = status === 'running'
+
+  const allAbnormalSegments = useMemo(() => {
+    const segs = [...abnormalSegments]
+    if (activeAbnormal && isRunning) {
+      segs.push({
+        ...activeAbnormal,
+        endTime: Date.now(),
+        endTemp: activeAbnormal.endTemp
+      })
+    }
+    return segs
+  }, [abnormalSegments, activeAbnormal, isRunning])
 
   const stats = useMemo(() => {
     if (tempRecords.length === 0) {
@@ -33,17 +50,18 @@ function SummaryPage() {
   }, [tempRecords])
 
   const durationText = useMemo(() => {
-    if (!info.startTime || !info.endTime) return '-'
-    const diff = info.endTime - info.startTime
+    if (!info.startTime) return '-'
+    const end = info.endTime || Date.now()
+    const diff = end - info.startTime
     const h = Math.floor(diff / 3600000)
     const m = Math.floor((diff % 3600000) / 60000)
     return `${h}小时${m}分钟`
   }, [info.startTime, info.endTime])
 
   const abnormalTotalDuration = useMemo(() => {
-    if (abnormalSegments.length === 0) return 0
-    return abnormalSegments.reduce((sum, seg) => sum + (seg.endTime - seg.startTime), 0)
-  }, [abnormalSegments])
+    if (allAbnormalSegments.length === 0) return 0
+    return allAbnormalSegments.reduce((sum, seg) => sum + (seg.endTime - seg.startTime), 0)
+  }, [allAbnormalSegments])
 
   const abnormalMinutes = Math.ceil(abnormalTotalDuration / 60000)
 
@@ -53,16 +71,16 @@ function SummaryPage() {
   }, [info.startTime])
 
   const verdict = useMemo(() => {
-    if (abnormalSegments.length === 0) return { level: 'normal', text: '全程温度达标' }
+    if (allAbnormalSegments.length === 0) return { level: 'normal', text: '全程温度达标' }
     if (abnormalMinutes < 10) return { level: 'warning', text: '存在短时温度波动' }
     return { level: 'danger', text: '存在温度异常记录' }
-  }, [abnormalSegments, abnormalMinutes])
+  }, [allAbnormalSegments, abnormalMinutes])
 
-  const hasData = status === 'finished' || (status === 'running' && tempRecords.length > 0)
+  const hasData = isFinished || (isRunning && tempRecords.length > 0)
 
   const handleGenerate = () => {
-    if (!hasData) {
-      Taro.showToast({ title: '暂无运输数据', icon: 'none' })
+    if (!isFinished) {
+      Taro.showToast({ title: '请先结束运输再生成报告', icon: 'none' })
       return
     }
     setGenerated(true)
@@ -71,7 +89,21 @@ function SummaryPage() {
     console.log('[Summary] report generated', {
       reportNo,
       plate: info.plateNumber,
-      abnormalCount: abnormalSegments.length
+      abnormalCount: allAbnormalSegments.length
+    })
+  }
+
+  const handleEndTransport = () => {
+    Taro.showModal({
+      title: '结束运输',
+      content: '确认已到达收货点并结束本次运输？',
+      confirmText: '确认结束',
+      confirmColor: '#EF4444',
+      success: (res) => {
+        if (res.confirm) {
+          endTransport()
+        }
+      }
     })
   }
 
@@ -112,9 +144,17 @@ function SummaryPage() {
   return (
     <View className={styles.page}>
       <View className={styles.headerSection}>
-        <Text className={styles.reportTitle}>冷链运输温度报告</Text>
+        <Text className={styles.reportTitle}>
+          {isRunning ? '运输温度预览' : '冷链运输温度报告'}
+        </Text>
         <Text className={styles.reportSubtitle}>{info.plateNumber} · {info.goodsCategoryLabel}</Text>
-        <View className={styles.reportNo}>报告编号：{reportNo}</View>
+        {isFinished && <View className={styles.reportNo}>报告编号：{reportNo}</View>}
+        {isRunning && (
+          <View className={styles.runningBanner}>
+            <View className={styles.runningDot} />
+            <Text className={styles.runningText}>运输进行中，数据为实时预览</Text>
+          </View>
+        )}
       </View>
 
       <View className={styles.infoCard}>
@@ -202,20 +242,20 @@ function SummaryPage() {
           verdict.level === 'warning' && styles.abnormalSummaryWarn,
           verdict.level === 'danger' && styles.abnormalSummaryDanger
         )}>
-          <View className={styles.abnormalCount}>{abnormalSegments.length}</View>
+          <View className={styles.abnormalCount}>{allAbnormalSegments.length}</View>
           <View className={styles.abnormalText}>
             <Text className={styles.abnormalTextMain}>{verdict.text}</Text>
             <Text className={styles.abnormalTextSub}>
-              {abnormalSegments.length === 0
+              {allAbnormalSegments.length === 0
                 ? '运输全程温度均在目标范围内，货品品质有保障'
-                : `共 ${abnormalSegments.length} 次异常，累计约 ${abnormalMinutes} 分钟`}
+                : `共 ${allAbnormalSegments.length} 次异常，累计约 ${abnormalMinutes} 分钟`}
             </Text>
           </View>
         </View>
 
-        {abnormalSegments.length > 0 && (
+        {allAbnormalSegments.length > 0 && (
           <View className={styles.abnormalList}>
-            {abnormalSegments.map((seg, i) => (
+            {allAbnormalSegments.map((seg, i) => (
               <View
                 key={i}
                 className={classnames(styles.abnormalItem, seg.type === 'high' && styles.abnormalItemHigh)}
@@ -299,12 +339,25 @@ function SummaryPage() {
       </View>
 
       <View className={styles.bottomBar}>
-        <Button className={styles.secondaryBtn} onClick={handleNewTrip}>
-          新运输
-        </Button>
-        <Button className={styles.generateBtn} onClick={handleGenerate}>
-          {generated ? '重新生成报告' : '一键生成摘要'}
-        </Button>
+        {isRunning ? (
+          <>
+            <Button className={styles.secondaryBtn} onClick={() => Taro.switchTab({ url: '/pages/transit/index' })}>
+              返回途中
+            </Button>
+            <Button className={styles.endBtn} onClick={handleEndTransport}>
+              结束运输
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button className={styles.secondaryBtn} onClick={handleNewTrip}>
+              新运输
+            </Button>
+            <Button className={styles.generateBtn} onClick={handleGenerate}>
+              {generated ? '重新生成报告' : '一键生成摘要'}
+            </Button>
+          </>
+        )}
       </View>
     </View>
   )

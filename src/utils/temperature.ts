@@ -13,12 +13,18 @@ export function getTempStatus(
   min: number,
   max: number
 ): TempStatus {
-  const warningRange = (max - min) * 0.2
+  const warningBuffer = (max - min) * 0.15
   if (temp > max) {
-    return temp > max + warningRange ? 'danger-high' : 'warning-high'
+    return 'danger-high'
+  }
+  if (temp >= max - warningBuffer) {
+    return 'warning-high'
   }
   if (temp < min) {
-    return temp < min - warningRange ? 'danger-low' : 'warning-low'
+    return 'danger-low'
+  }
+  if (temp <= min + warningBuffer) {
+    return 'warning-low'
   }
   return 'normal'
 }

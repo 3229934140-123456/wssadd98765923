@@ -83,6 +83,35 @@
   font-weight: $font-weight-medium;
 }
 
+.runningBanner {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-xs;
+  margin-top: $spacing-md;
+  padding: $spacing-xs $spacing-md;
+  background: rgba($color-success, 0.1);
+  border-radius: $radius-round;
+}
+
+.runningDot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: $radius-round;
+  background: $color-success;
+  animation: pulseDot 1.5s infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.2); }
+}
+
+.runningText {
+  font-size: $font-size-xs;
+  color: $color-success;
+  font-weight: $font-weight-medium;
+}
+
 .infoCard {
   background: $color-bg-card;
   border-radius: $radius-lg;
@@ -423,6 +452,20 @@
   font-size: $font-size-lg;
   font-weight: $font-weight-semibold;
   box-shadow: 0 6rpx 20rpx rgba($color-primary, 0.25);
+
+  &:active { opacity: 0.9; transform: scale(0.98); }
+}
+
+.endBtn {
+  @include button-reset;
+  flex: 1;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, $color-error 0%, #F87171 100%);
+  border-radius: $radius-button;
+  color: #ffffff;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  box-shadow: 0 6rpx 20rpx rgba($color-error, 0.25);
 
   &:active { opacity: 0.9; transform: scale(0.98); }
 }
