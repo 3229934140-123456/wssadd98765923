@@ -1,0 +1,428 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  padding: $spacing-lg $page-padding 160rpx;
+  min-height: 100vh;
+}
+
+.emptyState {
+  padding: $spacing-xl * 3 $spacing-lg;
+  text-align: center;
+}
+
+.emptyIcon {
+  width: 160rpx;
+  height: 160rpx;
+  margin: 0 auto $spacing-lg;
+  border-radius: $radius-round;
+  background: rgba($color-text-tertiary, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 80rpx;
+}
+
+.emptyTitle {
+  display: block;
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-sm;
+}
+
+.emptyDesc {
+  display: block;
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  line-height: 1.6;
+  margin-bottom: $spacing-xl;
+}
+
+.primaryBtn {
+  @include button-reset;
+  display: inline-flex;
+  padding: 0 $spacing-xl;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, $color-primary 0%, $color-cold 100%);
+  border-radius: $radius-button;
+  color: #ffffff;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  box-shadow: 0 6rpx 20rpx rgba($color-primary, 0.25);
+
+  &:active { opacity: 0.9; }
+}
+
+.headerSection {
+  text-align: center;
+  padding: $spacing-md 0 $spacing-xl;
+}
+
+.reportTitle {
+  display: block;
+  font-size: 44rpx;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-xs;
+}
+
+.reportSubtitle {
+  display: block;
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+}
+
+.reportNo {
+  display: inline-block;
+  margin-top: $spacing-md;
+  padding: $spacing-xs $spacing-md;
+  background: rgba($color-primary, 0.08);
+  border-radius: $radius-round;
+  font-size: $font-size-xs;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
+.infoCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  margin-bottom: $spacing-md;
+}
+
+.cardTitle {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.cardTitleDot {
+  width: 8rpx;
+  height: 32rpx;
+  border-radius: $radius-round;
+  background: linear-gradient(180deg, $color-primary 0%, $color-cold 100%);
+}
+
+.infoGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-md;
+}
+
+.infoItem {
+  width: calc(50% - #{$spacing-sm});
+}
+
+.infoItemFull {
+  width: 100%;
+}
+
+.infoItemLabel {
+  display: block;
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-bottom: 6rpx;
+}
+
+.infoItemValue {
+  display: block;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.statsRow {
+  display: flex;
+  gap: $spacing-md;
+  margin-bottom: $spacing-lg;
+}
+
+.statCard {
+  flex: 1;
+  background: linear-gradient(145deg, #F0F9FF 0%, #E0F2FE 100%);
+  border-radius: $radius-lg;
+  padding: $spacing-lg $spacing-md;
+  text-align: center;
+}
+
+.statCardMin {
+  background: linear-gradient(145deg, #F0FDFA 0%, #CCFBF1 100%);
+}
+
+.statCardMax {
+  background: linear-gradient(145deg, #FFF7ED 0%, #FED7AA 100%);
+}
+
+.statCardAvg {
+  background: linear-gradient(145deg, #F0F9FF 0%, #DBEAFE 100%);
+}
+
+.statValue {
+  display: block;
+  font-size: 56rpx;
+  font-weight: $font-weight-bold;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  color: $color-primary-dark;
+  margin-bottom: $spacing-xs;
+}
+
+.statCardMin .statValue { color: $color-success; }
+.statCardMax .statValue { color: $color-warning; }
+.statCardAvg .statValue { color: $color-primary-dark; }
+
+.statUnit {
+  font-size: 24rpx;
+  font-weight: $font-weight-medium;
+  margin-left: 2rpx;
+}
+
+.statLabel {
+  display: block;
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+}
+
+.abnormalSummary {
+  display: flex;
+  align-items: center;
+  gap: $spacing-lg;
+  padding: $spacing-md $spacing-lg;
+  background: rgba($color-success, 0.06);
+  border: 2rpx solid rgba($color-success, 0.15);
+  border-radius: $radius-md;
+}
+
+.abnormalSummaryWarn {
+  background: rgba($color-warning, 0.06);
+  border-color: rgba($color-warning, 0.15);
+}
+
+.abnormalSummaryDanger {
+  background: rgba($color-error, 0.06);
+  border-color: rgba($color-error, 0.15);
+}
+
+.abnormalCount {
+  flex-shrink: 0;
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: $radius-round;
+  background: $color-success;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  font-weight: $font-weight-bold;
+}
+
+.abnormalSummaryWarn .abnormalCount { background: $color-warning; }
+.abnormalSummaryDanger .abnormalCount { background: $color-error; }
+
+.abnormalText {
+  flex: 1;
+}
+
+.abnormalTextMain {
+  display: block;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: 4rpx;
+}
+
+.abnormalTextSub {
+  display: block;
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.abnormalList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  margin-top: $spacing-md;
+}
+
+.abnormalItem {
+  background: rgba($color-warning, 0.04);
+  border: 2rpx solid rgba($color-warning, 0.1);
+  border-radius: $radius-md;
+  padding: $spacing-md;
+}
+
+.abnormalItemHigh {
+  background: rgba($color-error, 0.04);
+  border-color: rgba($color-error, 0.1);
+}
+
+.abnormalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+}
+
+.abnormalTypeTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6rpx;
+  padding: 4rpx $spacing-sm;
+  border-radius: $radius-round;
+  background: rgba($color-warning, 0.15);
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $color-warning;
+}
+
+.abnormalItemHigh .abnormalTypeTag {
+  background: rgba($color-error, 0.15);
+  color: $color-error;
+}
+
+.abnormalDuration {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.abnormalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.abnormalRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.abnormalRowLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.abnormalRowValue {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+  font-variant-numeric: tabular-nums;
+}
+
+.abnormalRemarkBox {
+  margin-top: $spacing-sm;
+  padding-top: $spacing-sm;
+  border-top: 1rpx dashed $color-border;
+}
+
+.abnormalRemarkLabel {
+  display: block;
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-bottom: 4rpx;
+}
+
+.abnormalRemarkText {
+  display: block;
+  font-size: $font-size-sm;
+  color: $color-success;
+  font-weight: $font-weight-medium;
+}
+
+.remarkSection {
+  margin-top: $spacing-md;
+}
+
+.remarkInput {
+  width: 100%;
+  min-height: 160rpx;
+  padding: $spacing-md;
+  background: $color-bg-page;
+  border-radius: $radius-md;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  box-sizing: border-box;
+  line-height: 1.6;
+}
+
+.signArea {
+  display: flex;
+  gap: $spacing-md;
+  margin-top: $spacing-md;
+}
+
+.signBox {
+  flex: 1;
+  padding: $spacing-lg;
+  background: $color-bg-page;
+  border: 2rpx dashed $color-border;
+  border-radius: $radius-md;
+  text-align: center;
+}
+
+.signLabel {
+  display: block;
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-bottom: $spacing-sm;
+}
+
+.signValue {
+  display: block;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.signDate {
+  display: block;
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.bottomBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: $spacing-md $page-padding calc($spacing-md + env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #FFFFFF 40%);
+  display: flex;
+  gap: $spacing-md;
+  z-index: 100;
+}
+
+.secondaryBtn {
+  @include button-reset;
+  height: $button-height-lg;
+  padding: 0 $spacing-xl;
+  background: $color-bg-card;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-button;
+  color: $color-text-secondary;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+
+  &:active { background: $color-bg-hover; }
+}
+
+.generateBtn {
+  @include button-reset;
+  flex: 1;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, $color-primary 0%, $color-cold 100%);
+  border-radius: $radius-button;
+  color: #ffffff;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  box-shadow: 0 6rpx 20rpx rgba($color-primary, 0.25);
+
+  &:active { opacity: 0.9; transform: scale(0.98); }
+}

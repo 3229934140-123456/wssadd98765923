@@ -1,0 +1,295 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  padding: $spacing-lg $page-padding $spacing-xl;
+  min-height: 100vh;
+}
+
+.header {
+  margin-bottom: $spacing-xl;
+}
+
+.title {
+  display: block;
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-xs;
+}
+
+.subtitle {
+  display: block;
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+}
+
+.section {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+}
+
+.sectionTitle {
+  display: block;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-lg;
+}
+
+.field {
+  margin-bottom: $spacing-lg;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.label {
+  display: block;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-sm;
+}
+
+.input {
+  width: 100%;
+  height: 88rpx;
+  padding: 0 $spacing-lg;
+  background: $color-bg-page;
+  border-radius: $radius-md;
+  font-size: $font-size-lg;
+  color: $color-text-primary;
+  box-sizing: border-box;
+  border: 2rpx solid transparent;
+  transition: border-color $transition-base;
+
+  &:focus {
+    border-color: $color-primary;
+    background: #ffffff;
+  }
+}
+
+.pickerField {
+  width: 100%;
+  height: 88rpx;
+  padding: 0 $spacing-lg;
+  background: $color-bg-page;
+  border-radius: $radius-md;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pickerText {
+  font-size: $font-size-lg;
+  color: $color-text-primary;
+}
+
+.pickerPlaceholder {
+  font-size: $font-size-lg;
+  color: $color-text-disabled;
+}
+
+.pickerArrow {
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+}
+
+.tempRange {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.tempInputWrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.tempInput {
+  flex: 1;
+  height: 88rpx;
+  padding: 0 $spacing-md 0 $spacing-lg;
+  background: $color-bg-page;
+  border-radius: $radius-md;
+  font-size: $font-size-lg;
+  color: $color-text-primary;
+  box-sizing: border-box;
+  text-align: right;
+}
+
+.tempUnit {
+  margin-left: -60rpx;
+  width: 60rpx;
+  text-align: center;
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+  pointer-events: none;
+}
+
+.tempSep {
+  font-size: $font-size-lg;
+  color: $color-text-tertiary;
+  font-weight: $font-weight-semibold;
+}
+
+.categoryList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.categoryItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md $spacing-lg;
+  background: $color-bg-page;
+  border-radius: $radius-md;
+  border: 2rpx solid transparent;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.85;
+  }
+}
+
+.categoryItemActive {
+  background: rgba($color-primary, 0.06);
+  border-color: rgba($color-primary, 0.3);
+}
+
+.categoryLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.categoryName {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.categoryRange {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.categoryCheck {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: $radius-round;
+  background: $color-primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+}
+
+.actionSection {
+  margin-top: $spacing-xl;
+  padding-bottom: $spacing-xl;
+}
+
+.startBtn {
+  @include button-reset;
+  width: 100%;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, $color-primary 0%, $color-cold 100%);
+  border-radius: $radius-button;
+  color: #ffffff;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  border: none;
+  box-shadow: 0 8rpx 24rpx rgba($color-primary, 0.3);
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.startBtnDisabled {
+  background: $color-text-disabled;
+  box-shadow: none;
+}
+
+.tipText {
+  display: block;
+  text-align: center;
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-top: $spacing-md;
+}
+
+.statusBanner {
+  background: linear-gradient(135deg, rgba($color-success, 0.1) 0%, rgba($color-primary, 0.1) 100%);
+  border: 2rpx solid rgba($color-success, 0.2);
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+}
+
+.statusBannerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+
+  &:last-child { margin-bottom: 0; }
+}
+
+.statusBannerLabel {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.statusBannerValue {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.bannerActions {
+  display: flex;
+  gap: $spacing-md;
+  margin-top: $spacing-lg;
+}
+
+.secondaryBtn {
+  @include button-reset;
+  flex: 1;
+  height: $button-height-md;
+  background: $color-bg-card;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-button;
+  color: $color-text-secondary;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+
+  &:active {
+    background: $color-bg-hover;
+  }
+}
+
+.primarySmallBtn {
+  @include button-reset;
+  flex: 1;
+  height: $button-height-md;
+  background: $color-primary;
+  border-radius: $radius-button;
+  color: #ffffff;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+
+  &:active {
+    opacity: 0.9;
+  }
+}

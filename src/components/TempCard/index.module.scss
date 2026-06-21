@@ -1,0 +1,177 @@
+@use '@/styles/variables.scss' as *;
+
+.card {
+  background: linear-gradient(145deg, #FFFFFF 0%, #F0F9FF 100%);
+  border-radius: $radius-lg;
+  padding: $spacing-xl;
+  box-shadow: 0 4rpx 20rpx rgba($color-primary, 0.1);
+  border: 2rpx solid rgba($color-primary, 0.1);
+}
+
+.cardAbnormal {
+  background: linear-gradient(145deg, #FFFBEB 0%, #FEF3C7 100%);
+  border-color: rgba($color-warning, 0.2);
+  box-shadow: 0 4rpx 20rpx rgba($color-warning, 0.15);
+}
+
+.cardDanger {
+  background: linear-gradient(145deg, #FEF2F2 0%, #FEE2E2 100%);
+  border-color: rgba($color-error, 0.2);
+  box-shadow: 0 4rpx 20rpx rgba($color-error, 0.15);
+}
+
+.plateRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-lg;
+}
+
+.plateLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.plateNumber {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-primary-dark;
+  letter-spacing: 2rpx;
+}
+
+.tempRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-xl;
+}
+
+.tempDisplay {
+  display: flex;
+  align-items: baseline;
+}
+
+.tempValue {
+  font-size: 140rpx;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+  line-height: 1;
+  letter-spacing: -4rpx;
+  font-variant-numeric: tabular-nums;
+}
+
+.tempValueAbnormal {
+  color: $color-warning;
+  animation: shake 0.5s ease-in-out infinite alternate;
+}
+
+.tempValueDanger {
+  color: $color-error;
+  animation: shake 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes shake {
+  from { transform: translateX(0); }
+  to { transform: translateX(4rpx); }
+}
+
+.tempUnit {
+  font-size: 48rpx;
+  font-weight: $font-weight-semibold;
+  color: $color-primary;
+  margin-left: $spacing-xs;
+}
+
+.rangeRow {
+  margin-bottom: $spacing-lg;
+}
+
+.rangeInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rangeLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.rangeValue {
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+}
+
+.progressWrap {
+  margin-top: $spacing-md;
+}
+
+.progressTrack {
+  position: relative;
+  height: 16rpx;
+  background: $color-border;
+  border-radius: $radius-round;
+  overflow: visible;
+}
+
+.progressSafeZone {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: rgba($color-success, 0.2);
+  border-radius: $radius-round;
+}
+
+.progressFill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, $color-cold 0%, $color-primary 100%);
+  border-radius: $radius-round;
+  transition: width $transition-base ease;
+}
+
+.progressFillAbnormal {
+  background: linear-gradient(90deg, $color-warning 0%, #FBBF24 100%);
+}
+
+.progressFillDanger {
+  background: linear-gradient(90deg, $color-error 0%, #F87171 100%);
+}
+
+.progressDot {
+  position: absolute;
+  top: 50%;
+  width: 28rpx;
+  height: 28rpx;
+  background: #ffffff;
+  border: 4rpx solid $color-primary;
+  border-radius: $radius-round;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2rpx 8rpx rgba($color-primary, 0.3);
+  transition: left $transition-base ease;
+}
+
+.progressDotAbnormal {
+  border-color: $color-warning;
+  box-shadow: 0 2rpx 8rpx rgba($color-warning, 0.3);
+}
+
+.progressDotDanger {
+  border-color: $color-error;
+  box-shadow: 0 2rpx 8rpx rgba($color-error, 0.3);
+}
+
+.progressLabels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: $spacing-sm;
+}
+
+.progressLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  font-variant-numeric: tabular-nums;
+}

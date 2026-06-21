@@ -1,0 +1,193 @@
+@use '@/styles/variables.scss' as *;
+
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.6);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl;
+}
+
+.modal {
+  width: 100%;
+  max-width: 620rpx;
+  background: #ffffff;
+  border-radius: $radius-xl;
+  padding: $spacing-xl $spacing-lg;
+  box-shadow: $shadow-popup;
+  animation: modalIn 0.3s ease;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modalWarning {
+  border: 4rpx solid rgba($color-warning, 0.3);
+  background: linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 60%);
+}
+
+.modalDanger {
+  border: 4rpx solid rgba($color-error, 0.3);
+  background: linear-gradient(180deg, #FEF2F2 0%, #FFFFFF 60%);
+}
+
+.alertIcon {
+  width: 100rpx;
+  height: 100rpx;
+  margin: 0 auto $spacing-md;
+  border-radius: $radius-round;
+  background: linear-gradient(135deg, $color-warning 0%, #FBBF24 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulseIcon 1s infinite;
+}
+
+.modalDanger .alertIcon {
+  background: linear-gradient(135deg, $color-error 0%, #F87171 100%);
+}
+
+@keyframes pulseIcon {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+.alertIconText {
+  font-size: 64rpx;
+  font-weight: $font-weight-bold;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.alertTitle {
+  display: block;
+  text-align: center;
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-lg;
+}
+
+.modalWarning .alertTitle { color: $color-warning; }
+.modalDanger .alertTitle { color: $color-error; }
+
+.tempDisplay {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  margin-bottom: $spacing-sm;
+}
+
+.tempValue {
+  font-size: 160rpx;
+  font-weight: $font-weight-bold;
+  line-height: 1;
+  letter-spacing: -4rpx;
+  font-variant-numeric: tabular-nums;
+  color: $color-warning;
+}
+
+.tempWarning { color: $color-warning; }
+.tempDanger { color: $color-error; }
+
+.tempUnit {
+  font-size: 56rpx;
+  font-weight: $font-weight-semibold;
+  color: $color-warning;
+  margin-left: $spacing-xs;
+}
+
+.tempDanger + .tempUnit { color: $color-error; }
+.tempWarning + .tempUnit { color: $color-warning; }
+
+.rangeInfo {
+  text-align: center;
+  margin-bottom: $spacing-xl;
+}
+
+.rangeText {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+}
+
+.tipsSection {
+  background: $color-bg-page;
+  border-radius: $radius-md;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-xl;
+}
+
+.tipsTitle {
+  display: block;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+}
+
+.tipItem {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-sm;
+
+  &:last-child { margin-bottom: 0; }
+}
+
+.tipIndex {
+  flex-shrink: 0;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: $radius-round;
+  background: $color-primary;
+  color: #ffffff;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.modalWarning .tipIndex { background: $color-warning; }
+.modalDanger .tipIndex { background: $color-error; }
+
+.tipText {
+  flex: 1;
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  line-height: 1.6;
+}
+
+.confirmBtn {
+  @include button-reset;
+  width: 100%;
+  height: $button-height-lg;
+  border-radius: $radius-button;
+  background: linear-gradient(135deg, $color-warning 0%, #FBBF24 100%);
+  color: #ffffff;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  border: none;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.btnWarning {
+  background: linear-gradient(135deg, $color-warning 0%, #FBBF24 100%);
+}
+
+.btnDanger {
+  background: linear-gradient(135deg, $color-error 0%, #F87171 100%);
+}

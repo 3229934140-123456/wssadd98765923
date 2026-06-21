@@ -1,0 +1,290 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  padding: $spacing-lg $page-padding 160rpx;
+  min-height: 100vh;
+}
+
+.idleState {
+  padding: $spacing-xl * 2 $spacing-lg;
+  text-align: center;
+}
+
+.idleIcon {
+  width: 160rpx;
+  height: 160rpx;
+  margin: 0 auto $spacing-lg;
+  border-radius: $radius-round;
+  background: rgba($color-primary, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 80rpx;
+  color: $color-primary;
+}
+
+.idleTitle {
+  display: block;
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-sm;
+}
+
+.idleDesc {
+  display: block;
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  line-height: 1.6;
+  margin-bottom: $spacing-xl;
+}
+
+.startLinkBtn {
+  @include button-reset;
+  display: inline-flex;
+  padding: 0 $spacing-xl;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, $color-primary 0%, $color-cold 100%);
+  border-radius: $radius-button;
+  color: #ffffff;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+
+  &:active { opacity: 0.9; }
+}
+
+.headerBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-lg;
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.headerTitle {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+}
+
+.headerSub {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.timerBox {
+  background: rgba($color-primary, 0.08);
+  border-radius: $radius-md;
+  padding: $spacing-sm $spacing-md;
+}
+
+.timerLabel {
+  display: block;
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-bottom: 2rpx;
+}
+
+.timerValue {
+  display: block;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-primary;
+  font-variant-numeric: tabular-nums;
+}
+
+.tempSection {
+  margin-bottom: $spacing-md;
+}
+
+.statusRow {
+  display: flex;
+  gap: $spacing-md;
+  margin-bottom: $spacing-md;
+}
+
+.statusCard {
+  flex: 1;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-md $spacing-lg;
+  box-shadow: $shadow-card;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.statusCardLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.statusCardValue {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  font-variant-numeric: tabular-nums;
+}
+
+.infoCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  margin-bottom: $spacing-md;
+}
+
+.infoCardTitle {
+  display: block;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-sm 0;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child { border-bottom: none; }
+}
+
+.infoLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.infoValue {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.abnormalList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.abnormalItem {
+  background: rgba($color-warning, 0.06);
+  border: 2rpx solid rgba($color-warning, 0.15);
+  border-radius: $radius-md;
+  padding: $spacing-md;
+}
+
+.abnormalItemHigh {
+  background: rgba($color-error, 0.06);
+  border-color: rgba($color-error, 0.15);
+}
+
+.abnormalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+}
+
+.abnormalType {
+  display: inline-flex;
+  align-items: center;
+  gap: 6rpx;
+  padding: 4rpx $spacing-sm;
+  border-radius: $radius-round;
+  background: rgba($color-warning, 0.15);
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $color-warning;
+}
+
+.abnormalItemHigh .abnormalType {
+  background: rgba($color-error, 0.15);
+  color: $color-error;
+}
+
+.abnormalHandled {
+  font-size: $font-size-xs;
+  color: $color-success;
+  font-weight: $font-weight-medium;
+}
+
+.abnormalTime {
+  display: block;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-xs;
+}
+
+.abnormalTemp {
+  display: block;
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  font-variant-numeric: tabular-nums;
+}
+
+.abnormalRemark {
+  display: block;
+  margin-top: $spacing-sm;
+  padding-top: $spacing-sm;
+  border-top: 1rpx dashed $color-border;
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+}
+
+.emptyAbnormal {
+  padding: $spacing-lg;
+  text-align: center;
+}
+
+.emptyAbnormalText {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.bottomBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: $spacing-md $page-padding calc($spacing-md + env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #FFFFFF 40%);
+  display: flex;
+  gap: $spacing-md;
+  z-index: 100;
+}
+
+.endBtn {
+  @include button-reset;
+  flex: 1;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, $color-error 0%, #F87171 100%);
+  border-radius: $radius-button;
+  color: #ffffff;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  box-shadow: 0 6rpx 20rpx rgba($color-error, 0.25);
+
+  &:active { opacity: 0.9; transform: scale(0.98); }
+}
+
+.markBtn {
+  @include button-reset;
+  height: $button-height-lg;
+  padding: 0 $spacing-xl;
+  background: $color-bg-card;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-button;
+  color: $color-text-secondary;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+
+  &:active { background: $color-bg-hover; }
+}
